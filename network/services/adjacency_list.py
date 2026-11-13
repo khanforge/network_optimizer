@@ -1,4 +1,4 @@
-from network.models import Node, Edge
+from network.models import Edge
 from collections import defaultdict
 
 class AdjacencyList:
@@ -9,7 +9,7 @@ class AdjacencyList:
          "destination_id",
          "latency"
       )
-      
+
       for source, destination, latency in self.edges:
                self.graph[source].append((destination, latency))      
 
