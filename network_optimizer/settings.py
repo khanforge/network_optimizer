@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+dle7$to^xd^=319g%&*(ujaf!85()un*iu$=fd8@0326lpu4@'
+# SECRET_KEY = 'django-insecure-+dle7$to^xd^=319g%&*(ujaf!85()un*iu$=fd8@0326lpu4@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
+    'network',
+    'common'
 ]
 
 MIDDLEWARE = [
@@ -73,22 +75,14 @@ WSGI_APPLICATION = 'network_optimizer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "network_optimizer",
-        "USER": "root",
-        "PASSWORD": "",
-        "HOST": "127.0.0.1",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
@@ -135,3 +129,8 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+try:
+   from .local_settings import *
+except ImportError:
+   print("Local settings not found run ```cp local_settings_example.py local_settings.py``` and configure.")
