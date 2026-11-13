@@ -42,7 +42,7 @@ class ShortestRouteAPIView(APIView):
          return Response({
                "error": f"No path exists between {source} and {destination}"
             },
-            status=status.HTTP_404_NOT_FOUND
+            status=status.HTTP_400_BAD_REQUEST
          )
 
       nodes_obj = Node.objects.filter(
