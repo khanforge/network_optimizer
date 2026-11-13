@@ -1,0 +1,108 @@
+
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# ==========================================
+# Virtual Environment
+# ==========================================
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# ==========================================
+# Environment Variables / Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Django
+# ==========================================
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# ==========================================
+# Testing / Coverage
+# ==========================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+test-results/
+nosetests.xml
+
+# ==========================================
+# Django Migrations
+# ==========================================
+# Do NOT ignore migrations.
+# Keep migration files committed to Git.
+
+# ==========================================
+# IDEs / Editors
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ==========================================
+# Jupyter Notebook
+# ==========================================
+.ipynb_checkpoints/
+
+# ==========================================
+# Type Checking / Linting
+# ==========================================
+.mypy_cache/
+.dmypy.json
+.pyre/
+.ruff_cache/
+
+# ==========================================
+# Celery
+# ==========================================
+celerybeat-schedule
+celerybeat.pid
+
+# ==========================================
+# Logs / Temporary Files
+# ==========================================
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ==========================================
+# Documentation Builds
+# ==========================================
+docs/_build/
+
+# ==========================================
+# OS Files
+# ==========================================
+Thumbs.db
