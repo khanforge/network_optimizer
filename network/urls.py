@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import NodeModelViewSet, EdgeModelViewSet
+from .views import NodeModelViewSet, EdgeModelViewSet, ShortestRouteAPIView
 
 router = DefaultRouter()
 
@@ -9,3 +9,6 @@ router.register("edges", EdgeModelViewSet, basename="edges")
 
 urlpatterns = router.urls
 
+urlpatterns += [
+   path("routes/shortest/", ShortestRouteAPIView.as_view(), name="shortest-route")
+]

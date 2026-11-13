@@ -31,6 +31,14 @@ class PathFinder:
          destination_node = nodes.get(destination)
 
          if source_node is None or destination_node is None:
+            nodes = Node.objects.in_bulk(
+               [source, destination],
+               field_name="name"
+            )
+            source_node = nodes.get(source)
+            destination_node = nodes.get(destination)
+            
+         if source_node is None or destination_node is None:
             raise ValueError("Invalid source or destination")
 
          self.source = source_node.id
