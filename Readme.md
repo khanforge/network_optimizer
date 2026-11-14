@@ -45,6 +45,16 @@ The project follows a Monorepo Architecture.
    * Route History: Store and retrieve previously calculated routes.
    * API-based Architecture: Separate backend and frontend applications communicating through REST APIs.
 
+## Screenshot
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+### Dashboard Forms
+![Dashboard Forms](screenshots/forms.png)
+### Path Calculation Visualization
+![Path Calculation Visualization](screenshots/PathCalculation.png)
+### History
+![History](screenshots/history.png)
+
 ## Architecture
    The application follows client-server architecture
    ```text
