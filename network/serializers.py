@@ -46,6 +46,20 @@ class EdgeSerializer(serializers.ModelSerializer):
          )
       return attrs
 
+class RouteHistorySerializer(serializers.ModelSerializer):
+   source = serializers.SlugRelatedField(
+         slug_field="slug",
+         queryset = Node.objects.all()
+      )
+   destination = serializers.SlugRelatedField(
+      slug_field="slug",
+      queryset = Node.objects.all()
+   )
+   
+   class Meta:
+      model = RouteHistory
+      fields = "__all__"
+      read_only_fields = ['id', 'created_at', 'modified_at']
 
 
    
