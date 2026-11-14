@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
+from collections import defaultdict
 from rest_framework.test import APITestCase
 from rest_framework import status
+from decimal import Decimal
 from .models import Node, Edge
 # Create your tests here.
 
@@ -142,3 +144,72 @@ class EdgeAPITestCase(APITestCase):
 
       self.assertEqual(response.status_code, status.HTTP_201_CREATED)
       self.assertEqual(Edge.objects.count(), 2)
+
+class ShortestRouteAPITestCase(APITestCase):
+   def setUp(self):
+      self.url = reverse("shortest-route")
+      node_names = [
+         "A", "B", "C", "D"
+      ]
+      edges = [
+         ("A", "B", 5),
+         ("B", "D", 4),
+         ("A", "C", 10),
+         ("C", "D", 1)
+      ]
+
+      self.expected_total_latency = Decimal(9)
+      self.expected_path_nodes = ['A', "B", "D"]
+
+      nodes = defaultdict(type(Node))
+
+      for name in node_names:
+         nodes[name] = Node.objects.create(
+            name = name
+         )
+
+      for source, destination, latency in edges:
+         Edge.objects.create(
+            source = nodes[source],
+            destination = nodes[destination],
+            latency = latency
+         )
+
+   def test_shortest_path_and_latency(self):
+      source_slug = "a"
+      destination_slug = "d"
+      response = self.client.post(
+         self.url,
+         {
+            "source": source_slug,
+            "destination": destination_slug
+         },
+         format="json"
+      )
+
+      path = response.data['data']['path']
+      path_nodes = []
+      for path_objs in path:
+         path_nodes.append(path_objs['name'])
+      total_latency = response.data['data']['total_latency']
+
+      self.assertEqual(response.status_code, status.HTTP_200_OK)
+      self.assertEqual(path_nodes, self.expected_path_nodes)
+      self.assertEqual(total_latency, self.expected_total_latency)
+
+   def test_invalid_source(self):
+      source_slug = "unknown"
+      destination_slug = "d"
+      response = self.client.post(
+         self.url,
+         {
+            "source": source_slug,
+            "destination": destination_slug
+         },
+         format="json"
+      )
+      self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+      self.assertEqual(response.data['error'], f"Invalid source: {source_slug} or destination: {destination_slug}")
+
+   
+      

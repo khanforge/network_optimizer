@@ -77,8 +77,7 @@ class PathFinder:
       while self.path[-1] != self.source:
          self.path.append(previous[self.path[-1]])
 
-      for node in self.path:
-         self.total_latency += distance[node]
+      self.total_latency += distance[self.destination]
 
       self.path.reverse()
 
