@@ -20,3 +20,10 @@ export interface RouteHistoryResponse {
   data: RouteHistoryItem[];
 }
 
+export interface RouteHistoryFilters {
+  source?: string;
+  destination?: string;
+  limit?: number;
+  date_from?: string;
+  date_to?: string;
+}
