@@ -4,6 +4,12 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React development server
+    "http://localhost:8080",  # Vue development server
+    "http://127.0.0.1:3000",  # Alternative localhost format
+]
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
