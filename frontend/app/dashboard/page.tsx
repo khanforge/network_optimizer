@@ -34,6 +34,20 @@ export default function DashboardPage() {
     <main className="space-y-6 p-6">
       <h1 className="text-2xl font-bold">Network Monitor</h1>
 
+      {selectedRoute && (
+        <div className="rounded-xl border bg-white text-green-700 p-4">
+          <h2 className="font-semibold">Shortest Route Found</h2>
+
+          <p className="mt-2 text-sm">
+            {selectedRoute.path.map((node) => node.name).join(" → ")}
+          </p>
+
+          <p className="mt-2 font-semibold text-green-700">
+            Total latency: {selectedRoute.total_latency} ms
+          </p>
+        </div>
+      )}
+
       <div className="h-[600px] overflow-hidden rounded-xl border">
         <NetworkGraph
           refreshKey={refreshKey}
@@ -56,19 +70,6 @@ export default function DashboardPage() {
         />
       </div>
 
-      {selectedRoute && (
-        <div className="rounded-xl border bg-white text-green-700 p-4">
-          <h2 className="font-semibold">Shortest Route Found</h2>
-
-          <p className="mt-2 text-sm">
-            {selectedRoute.path.map((node) => node.name).join(" → ")}
-          </p>
-
-          <p className="mt-2 font-semibold text-green-700">
-            Total latency: {selectedRoute.total_latency} ms
-          </p>
-        </div>
-      )}
     </main>
   );
 }
