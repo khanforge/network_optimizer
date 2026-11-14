@@ -5,10 +5,10 @@ import { useState } from "react";
 import { createNode } from "@/services/network/api";
 
 interface Props {
-  onCreated: () => void;
+  setRefreshKey: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function AddServerForm({ onCreated }: Props) {
+export default function AddServerForm({ setRefreshKey }: Props) {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,7 +23,7 @@ export default function AddServerForm({ onCreated }: Props) {
       await createNode(name.trim());
 
       setName("");
-      onCreated();
+      setRefreshKey((previous) => previous + 1);
     } catch (err: any) {
       setError(
         err.response?.data?.name?.[0] ||

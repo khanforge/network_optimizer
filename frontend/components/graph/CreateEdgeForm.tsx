@@ -9,12 +9,12 @@ import { NetworkNode } from "@/services/network/types";
 
 interface Props {
   nodes: NetworkNode[];
-  onCreated: () => void;
+  setRefreshKey:  React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CreateEdgeForm({
   nodes,
-  onCreated,
+  setRefreshKey,
 }: Props) {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
@@ -39,7 +39,7 @@ export default function CreateEdgeForm({
       setDestination("");
       setLatency("");
 
-      onCreated();
+      setRefreshKey((previous) => previous + 1);
     } catch (err: any) {
       setError(
         err.response?.data?.non_field_errors?.[0] ||

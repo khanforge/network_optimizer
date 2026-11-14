@@ -16,19 +16,19 @@ interface RouteResult {
 
 export default function DashboardPage() {
   const [nodes, setNodes] = useState<NetworkNode[]>([]);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
   const [selectedRoute, setSelectedRoute] = useState<RouteResult | null>(null);
 
   async function refreshDashboard() {
     const data = await getNodes();
     setNodes(data);
-    setRefreshKey((previous) => previous + 1);
+    // setRefreshKey((previous) => psrevious + 1);
     setSelectedRoute(null);
   }
 
   useEffect(() => {
     refreshDashboard();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <main className="space-y-6 p-6">
@@ -56,12 +56,12 @@ export default function DashboardPage() {
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         <AddServerForm
-          onCreated={refreshDashboard}
+          setRefreshKey={setRefreshKey}
         />
 
         <CreateEdgeForm
           nodes={nodes}
-          onCreated={refreshDashboard}
+          setRefreshKey={setRefreshKey}
         />
 
         <ShortestRouteForm
