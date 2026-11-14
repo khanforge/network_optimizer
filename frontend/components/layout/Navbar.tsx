@@ -29,7 +29,7 @@ export default function Navbar() {
             <Link
                href="/"
                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
-                  isHistoryActive
+                  !isHistoryActive
                      ? "bg-blue-50 text-blue-700"
                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                }`}
