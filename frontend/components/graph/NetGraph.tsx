@@ -13,6 +13,8 @@ import {
    applyNodeChanges,
   type Node,
   type Edge,
+  type NodeChange,
+  type EdgeChange,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
@@ -20,11 +22,10 @@ import "@xyflow/react/dist/style.css";
 import {
   getNodes,
   getEdges,
-  type NetworkNode,
-  type NetworkEdge,
 } from "@/services/network/api";
 
 import { getLayoutedElements } from "./layout";
+import { NetworkNode } from "@/services/network/types";
 
 interface NetworkGraphProps {
   refreshKey: number;
@@ -41,11 +42,11 @@ export default function NetworkGraph({
    const [error, setError] = useState("");
    
    const onNodesChange = useCallback(
-      (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+      (changes: NodeChange[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
       [],
    );
    const onEdgesChange = useCallback(
-      (changes) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+      (changes: EdgeChange[]) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
       [],
    );
 
@@ -95,35 +96,37 @@ export default function NetworkGraph({
         }));
 
         // Convert Django edges into React Flow edges
-        const formattedEdges: Edge[] = networkEdges
-          .map((edge) => {
-            const sourceId = slugToId.get(edge.source);
-            const destinationId = slugToId.get(edge.destination);
+        
+        const formattedEdges: Edge[] = networkEdges.flatMap((edge): Edge[] => {
+          const sourceId = slugToId.get(edge.source);
+          const destinationId = slugToId.get(edge.destination);
 
-            // Skip edges whose nodes are not present
-            if (!sourceId || !destinationId) {
-              return null;
-            }
+          // Skip edges whose nodes are not present
+          if (!sourceId || !destinationId) {
+            return [];
+          }
 
-            return {
-              id: String(edge.id),
-              source: sourceId,
-              target: destinationId,
-              label: `${edge.latency} ms`,
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-              },
-              style: {
-                stroke: "#94a3b8",
-                strokeWidth: 2,
-              },
-              labelStyle: {
-                fill: "#475569",
-                fontSize: 12,
-              },
-            };
-          })
-          .filter((edge): edge is Edge => edge !== null);
+          const formattedEdge: Edge = {
+            id: String(edge.id),
+            source: sourceId,
+            target: destinationId,
+            label: `${edge.latency} ms`,
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+            },
+            style: {
+              stroke: "#94a3b8",
+              strokeWidth: 2,
+            },
+            labelStyle: {
+              fill: "#475569",
+              fontSize: 12,
+            },
+          };
+
+          return [formattedEdge];
+        });
+
 
         // Collect IDs of nodes in the selected shortest path
         const highlightedNodeIds = new Set(

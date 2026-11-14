@@ -3,8 +3,8 @@
 import { useState } from "react";
 import {
   findShortestRoute,
-  type NetworkNode,
 } from "@/services/network/api";
+import { NetworkNode } from "@/services/network/types";
 
 interface ShortestRouteFormProps {
   nodes: NetworkNode[];
