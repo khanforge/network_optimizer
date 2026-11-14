@@ -27,7 +27,7 @@ export default function Navbar() {
         {/* Navigation */}
         <div className="flex items-center gap-2">
             <Link
-               href="/"
+               href="/dashboard"
                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
                   !isHistoryActive
                      ? "bg-blue-50 text-blue-700"

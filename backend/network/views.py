@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.db.models import Q
+from django.utils import timezone
+from datetime import datetime, time
+from zoneinfo import ZoneInfo
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -76,6 +79,9 @@ class RouteHistoryAPIView(APIView):
       date_from =  request.query_params.get("date_from")
       date_to =  request.query_params.get("date_to")
 
+      india_tz = ZoneInfo("Asia/Kolkata")
+
+
       try:
          limit = int(request.query_params.get("limit"))
       except (TypeError, ValueError):
@@ -89,17 +95,40 @@ class RouteHistoryAPIView(APIView):
          q &= Q(destination_id = destination) if isinstance(destination, int) else Q(destination__slug = destination)
 
       if date_from:
+         date_from = datetime.strptime(
+            date_from, "%Y-%m-%d"
+         ).date()
+         date_from = timezone.make_aware(
+            datetime.combine(
+               date_from,
+               time.min
+            ), 
+            india_tz
+         )
          q &= Q(created_at__gte = date_from)
 
       if date_to:
+         date_to = datetime.strptime(
+            date_to, "%Y-%m-%d"
+         ).date()
+         date_to = timezone.make_aware(
+            datetime.combine(
+               date_to,
+               time.min
+            ), 
+            india_tz
+         )
          q &= Q(created_at__lte = date_to)
+
 
       limit = max(1, min(limit, 50))
       history_objs = RouteHistory.objects.select_related(
          "source",
          "destination"
       ).filter(q).order_by("-modified_at")[:limit]
-
+      print(date_from)
+      print(q)
+      print(history_objs)
       history = RouteHistorySerializer(history_objs, many=True).data
 
       return Response({
